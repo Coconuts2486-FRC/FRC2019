@@ -1,6 +1,5 @@
 package frc.auto.commands;
 
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;

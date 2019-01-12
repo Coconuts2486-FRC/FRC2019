@@ -46,7 +46,7 @@ public class ICommandDeserializer implements JsonDeserializer<ICommand> {
     
         return command;
 
-        // Broken. Don't uncomment unless its fixed. Temporary solution above.
+        // TODO: Broken. Don't uncomment unless its fixed. Temporary solution above.
         // Set<Class<? extends ICommand>> annotatedClasses = new Reflections("frc.auto.commands").getSubTypesOf(ICommand.class);
         // for (Class<? extends ICommand> o : annotatedClasses) {
         //     Command[] annotations = o.getAnnotationsByType(Command.class);

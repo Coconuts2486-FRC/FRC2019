@@ -1,0 +1,16 @@
+{
+  "Type": "RobotConfig",
+  "Motor Controller IDs": {
+    "left": 1,
+    "right": 2,
+    "leftFollower": 3,
+    "rightFollower": 4
+  },
+  "Pneumatic IDs": {
+    "pneumatic2": 2,
+    "pneumatic3": 3,
+    "pneumatic0": 0,
+    "pneumatic1": 1,
+    "pneumatic4": 4
+  }
+}
