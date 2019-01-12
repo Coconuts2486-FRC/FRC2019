@@ -2,10 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.auto.commands.Drive;
-import frc.auto.commands.utils.ICommand;
-import frc.auto.commands.utils.ICommandDeserializer;
-import frc.auto.commands.utils.ICommandSerializer;
+import frc.auto.missions.AutoMission;
 import frc.debug.FileHandler;
 import frc.opmode.Autonomous;
 import frc.opmode.Disabled;
@@ -19,9 +16,6 @@ import static frc.robot.RobotMap.*;
 import java.io.File;
 import java.nio.file.Paths;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 public class Robot extends TimedRobot {
 
   private OpMode _opMode;
@@ -30,19 +24,10 @@ public class Robot extends TimedRobot {
     // Initialize the RobotMap instances.
     init();
 
-    Drive drive = new Drive(0.5, 0.5, 1000);
-    // Sleep sleep = new Sleep(2000);
+    AutoMission m = new AutoMission();
+    AutoMission.Test123 test = m.new Test123();
 
-    Gson gson = new GsonBuilder().registerTypeAdapter(Drive.class, new ICommandSerializer()).setPrettyPrinting().create();
-    // Gson gson2 = new GsonBuilder().registerTypeAdapter(Sleep.class, new ICommandSerializer()).setPrettyPrinting().create();
-    String json = gson.toJson(drive);
-    logger.printDebug(json);
-    // String json2 = gson2.toJson(drive);
-    // logger.printDebug(json2);
-
-    Gson gsonDeserialized = new GsonBuilder().registerTypeAdapter(ICommand.class, new ICommandDeserializer()).create();
-    ICommand driveDeserialized = gsonDeserialized.fromJson(json, ICommand.class);
-    driveDeserialized.run();
+    test.testMission();
 
     // Politely ask the JVM to clean house.
     System.gc();

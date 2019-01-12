@@ -1,7 +1,5 @@
 package frc.opmode;
 
-import com.google.gson.annotations.Expose;
-
 import edu.wpi.first.wpilibj.DriverStation;
 
 /**
@@ -12,10 +10,8 @@ public abstract class OpMode {
     /**
      * Game-specific message from the Driver Station or Field Management System, depending on which is connected.
      * This is set once the constructor is called. If a null pointer exception occurs when accessing, the constructor was not called.
-     * The {@code}@Expose{@code} annotation is set to false.
      */
-    @Expose(serialize = false, deserialize = false)
-    protected String gameData;
+    protected transient String gameData;
 
     /**
      * Create a new instance of OpMode.

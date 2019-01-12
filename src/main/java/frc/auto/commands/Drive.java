@@ -2,7 +2,6 @@ package frc.auto.commands;
 
 import java.util.concurrent.TimeUnit;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.google.common.base.Stopwatch;
 
 import frc.auto.commands.utils.Command;
@@ -42,8 +41,7 @@ public class Drive extends ICommand {
     @Override
     public void run() {
         RobotMap.logger.printStatus(String.format("Driving left with speed %s and right with %s for %s ms.", parameters.get("speedLeft"), parameters.get("speedRight"), parameters.get("duration")));
-        RobotMap.driveTrain.left.set(ControlMode.PercentOutput, parameters.get("speedLeft"));
-        RobotMap.driveTrain.right.set(ControlMode.PercentOutput, parameters.get("speedRight"));
+        RobotMap.driveTrain.set(parameters.get("speedLeft"), parameters.get("speedRight"));
         sleep(Double.valueOf(parameters.get("duration")).longValue());
     }
 

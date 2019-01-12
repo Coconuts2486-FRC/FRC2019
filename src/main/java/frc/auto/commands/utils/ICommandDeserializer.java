@@ -16,6 +16,7 @@ import com.google.gson.JsonParser;
 import org.reflections.Reflections;
 
 import frc.auto.commands.Drive;
+import frc.auto.commands.Sleep;
 import frc.robot.RobotMap;
 
 /**
@@ -32,6 +33,9 @@ public class ICommandDeserializer implements JsonDeserializer<ICommand> {
         switch(type) {
             case "Drive":
                 command = new Drive();
+                break;
+            case "Sleep":
+                command = new Sleep();
                 break;
             default:
                 command = new ICommand();
