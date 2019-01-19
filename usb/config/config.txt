@@ -7,10 +7,7 @@
     "rightFollower": 3
   },
   "Pneumatic IDs": {
-    "pneumatic2": 2,
-    "pneumatic3": 3,
-    "pneumatic0": 0,
-    "pneumatic1": 1,
-    "pneumatic4": 4
+    "driveShifter": 0,
+    "pcm": 21,
   }
 }
