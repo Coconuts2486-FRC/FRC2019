@@ -1,11 +1,8 @@
 package frc.auto.commands.utils;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -14,13 +11,6 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
-
-import org.reflections.Reflections;
-
-import frc.auto.commands.Drive;
-import frc.auto.commands.Sleep;
-import frc.robot.RobotMap;
 
 /**
  * ICommandDeserializer

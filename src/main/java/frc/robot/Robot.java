@@ -2,8 +2,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.auto.commands.utils.Command;
-import frc.auto.commands.utils.ICommand;
 import frc.auto.missions.AutoMission;
 import frc.debug.FileHandler;
 import frc.opmode.Autonomous;
@@ -17,11 +15,8 @@ import static frc.robot.RobotMap.*;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Set;
 
-import org.reflections.Reflections;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class Robot extends TimedRobot {
 
@@ -99,15 +94,18 @@ public class Robot extends TimedRobot {
     if(new File("/home/lvuser/README_File_Paths.txt").exists()) {
       FileHandler.loadConfig(); // Loads config file.
       DriverStation ds = DriverStation.getInstance();
-      logger.printStatus(String.format("You are playing %s match %s at %s.", ds.getMatchType(), ds.getMatchNumber(), ds.getLocation()));
+
+      if(ds.isFMSAttached())
+        logger.printStatus(String.format("You are playing %s match %s at %s.", ds.getMatchType(), ds.getMatchNumber(), ds.getLocation()));
+
+      RobotMap.driveTrain = DriveTrain.getInstance();
     }
+
     // Program is run locally. Load the config file elsewhere.
     else {
       // Gets the config file from the robot directory path.
       String s = Paths.get("").toAbsolutePath().toString() + "\\usb\\config\\config.txt";
       FileHandler.loadConfig(s);
     }
-
-    RobotMap.driveTrain = DriveTrain.getInstance();
   }
 }
