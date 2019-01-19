@@ -34,7 +34,7 @@ public class DriveTrain
 
     private void assign()
     {
-        String[] keys = {"left", "right", "leftFollower", "rightFollower", "driveShifter"};
+        String[] keys = {"left", "right", "leftFollower", "rightFollower", "driveShifter", "pcm"};
         
         if(RobotMap.config.motorControllerIDs.containsKey(keys[0]))
             left = new TalonSRX(RobotMap.config.motorControllerIDs.get(keys[0]));
@@ -56,8 +56,8 @@ public class DriveTrain
         else
             RobotMap.logger.printError(String.format("Key %s could not be found.", keys[3]));
 
-        if(RobotMap.config.pneumaticIDs.containsKey(keys[4]))
-            driveShifters = new Solenoid(RobotMap.config.motorControllerIDs.get(keys[4]));
+        if(RobotMap.config.pneumaticIDs.containsKey(keys[4]) && RobotMap.config.pneumaticIDs.containsKey(keys[5]))
+            driveShifters = new Solenoid(RobotMap.config.pneumaticIDs.get(keys[5]), RobotMap.config.pneumaticIDs.get(keys[4]));
         else
             RobotMap.logger.printError(String.format("Key %s could not be found.", keys[4]));
     }

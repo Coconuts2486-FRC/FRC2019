@@ -41,14 +41,5 @@ public class ICommandDeserializer implements JsonDeserializer<ICommand> {
         }
 
         return null;
-
-        // Type t = clazz.getGenericSuperclass();
-
-        // command = (ICommand) t;
-
-        // RobotMap.logger.printDebug(typeOfT.toString());
-        // RobotMap.logger.printDebug(type);
-
-        // return command;
     }
 }
