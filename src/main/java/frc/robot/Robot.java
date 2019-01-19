@@ -16,19 +16,16 @@ import static frc.robot.RobotMap.*;
 import java.io.File;
 import java.nio.file.Paths;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 public class Robot extends TimedRobot {
 
   private OpMode _opMode;
 
   public Robot() {
+    String s = RobotConfig.generate().serialize(true);
+    logger.printDebug(s);
+
     // Initialize the RobotMap instances.
     init();
-
-    AutoMission m = new AutoMission();
-    AutoMission.Test test = m.new Test();
-    test.testMission();
 
     // Politely ask the JVM to clean house.
     System.gc();
@@ -107,5 +104,14 @@ public class Robot extends TimedRobot {
       String s = Paths.get("").toAbsolutePath().toString() + "\\usb\\config\\config.txt";
       FileHandler.loadConfig(s);
     }
+
+    driveTrain.init();
+
+  }
+
+  public void testAuto() {
+    AutoMission m = new AutoMission();
+    AutoMission.Test test = m.new Test();
+    test.testMission();
   }
 }

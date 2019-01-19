@@ -12,7 +12,7 @@ import com.google.gson.JsonSerializer;
 import frc.robot.RobotMap;
 
 /**
- * ICommandSerializer
+ * Dictates how ICommand subclasses are serialized from JSON.
  */
 public class ICommandSerializer implements JsonSerializer<ICommand> {
 

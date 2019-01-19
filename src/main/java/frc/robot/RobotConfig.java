@@ -37,7 +37,7 @@ public class RobotConfig extends Serializable {
     @SerializedName("Pneumatic IDs")
     public HashMap<String, Byte> pneumaticIDs = new HashMap<>(5, 1); // 5 pneumatic devices, double at 100% load factor
     @SerializedName("Input Device IDs")
-    public HashMap<String, Byte> inputDevicesIDs = new HashMap<>(4, 1); // 4 input devices, double at 100% load factor
+    public HashMap<String, Byte> inputDeviceIDs = new HashMap<>(4, 1); // 4 input devices, double at 100% load factor
     /** Methods for access. */ 
 
     /**
@@ -47,6 +47,7 @@ public class RobotConfig extends Serializable {
     public String toString() {
         Set<String> motorKeys = motorControllerIDs.keySet();
         Set<String> pneumaticKeys = pneumaticIDs.keySet();
+        Set<String> inputKeys = inputDeviceIDs.keySet();
 
         StringBuilder sb = new StringBuilder();
 
@@ -59,6 +60,13 @@ public class RobotConfig extends Serializable {
 
         sb.append("Pneumatic Keys: ");
         for(String i : pneumaticKeys)
+        {
+            sb.append(i);
+            sb.append(", ");
+        }
+
+        sb.append("Input Device Keys: ");
+        for(String i : inputKeys)
         {
             sb.append(i);
             sb.append(", ");
@@ -99,7 +107,7 @@ public class RobotConfig extends Serializable {
             StringBuilder sb = new StringBuilder("input");
             sb.append(i);
 
-            config.inputDevicesIDs.put(sb.toString(), i);
+            config.inputDeviceIDs.put(sb.toString(), i);
         }
 
         return config;
@@ -139,7 +147,7 @@ public class RobotConfig extends Serializable {
         Gson gson = new Gson();
         config.motorControllerIDs = gson.fromJson(o.get("Motor Controller IDs"), token);
         config.pneumaticIDs = gson.fromJson(o.get("Pneumatic IDs"), token);
-        config.inputDevicesIDs = gson.fromJson(o.get("Input Device IDs"), token);
+        config.inputDeviceIDs = gson.fromJson(o.get("Input Device IDs"), token);
 
         return config;
     }

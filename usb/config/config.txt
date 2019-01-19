@@ -1,5 +1,6 @@
 {
   "Type": "RobotConfig",
+  "version": 1.0,
   "Motor Controller IDs": {
     "left": 4,
     "right": 2,
@@ -8,9 +9,9 @@
   },
   "Pneumatic IDs": {
     "driveShifter": 0,
-    "pcm": 21,
-  }
-  "Input Devices IDs": {
-    "joystick1": 0,
+    "pcm": 21
+  },
+  "Input Device IDs": {
+    "joystick1": 0
   }
 }

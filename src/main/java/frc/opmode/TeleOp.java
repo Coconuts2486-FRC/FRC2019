@@ -20,8 +20,8 @@ public class TeleOp extends OpMode {
 
     @Override
     public void loop() {
-        RobotMap.driveTrain.set((RobotMap.driveTrain.getJoystickY() - -RobotMap.driveTrain.getJoystickX()), (RobotMap.driveTrain.getJoystickY() + -RobotMap.driveTrain.getJoystickX()));
-        if (RobotMap.driveTrain.isTriggerPressed()){
+        RobotMap.driveTrain.set((RobotMap.driveTrain.getJoystickY() + -RobotMap.driveTrain.getJoystickX()), (RobotMap.driveTrain.getJoystickY() - -RobotMap.driveTrain.getJoystickX()));
+        if (RobotMap.driveTrain.isTriggerPressed()) {
             RobotMap.driveTrain.setShifter(!RobotMap.driveTrain.getShifterState());
         }
     }

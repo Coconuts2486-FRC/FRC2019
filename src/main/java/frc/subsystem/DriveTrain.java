@@ -64,8 +64,9 @@ public class DriveTrain
             driveShifters = new Solenoid(RobotMap.config.pneumaticIDs.get(keys[5]), RobotMap.config.pneumaticIDs.get(keys[4]));
         else
             RobotMap.logger.printError(String.format("Key %s could not be found.", keys[4]));
-        if(RobotMap.config.inputDevicesIDs.containsKey(keys[6]))
-            joystick1 = new Joystick(RobotMap.config.inputDevicesIDs.get(keys[6]));
+            
+        if(RobotMap.config.inputDeviceIDs.containsKey(keys[6]))
+            joystick1 = new Joystick(RobotMap.config.inputDeviceIDs.get(keys[6]));
         else
             RobotMap.logger.printError(String.format("Key %s could not be found.", keys[6]));
     }
@@ -83,6 +84,7 @@ public class DriveTrain
     public void set(double left, double right) {
         this.left.set(ControlMode.PercentOutput, left);
         this.right.set(ControlMode.PercentOutput, right);
+        
     }
 
     public void setShifter(boolean shifterOnOff) {
@@ -107,5 +109,12 @@ public class DriveTrain
     public boolean isTriggerPressed() {
         return
         joystick1.getTriggerPressed();
+    }
+
+    public void init() {
+        leftFollower.set(ControlMode.Follower, left.getDeviceID());
+        rightFollower.set(ControlMode.Follower, right.getDeviceID());
+        RobotMap.driveTrain.right.setInverted(true);
+        RobotMap.driveTrain.rightFollower.setInverted(true);
     }
 }
