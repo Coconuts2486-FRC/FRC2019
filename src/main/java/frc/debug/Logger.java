@@ -6,10 +6,10 @@ import com.google.common.base.Stopwatch;
 
 import frc.enums.Log;
 
-import org.fusesource.jansi.AnsiConsole;
+// import org.fusesource.jansi.AnsiConsole;
 
-import static org.fusesource.jansi.Ansi.*;
-import static org.fusesource.jansi.Ansi.Color.*;
+// import static org.fusesource.jansi.Ansi.*;
+// import static org.fusesource.jansi.Ansi.Color.*;
 
 /**
  * Provides basic logging functions.
@@ -25,7 +25,7 @@ public class Logger
     
     private Logger() {
         _stopwatch.start();
-        AnsiConsole.systemInstall();
+        //AnsiConsole.systemInstall();
     }
 
     public static Logger getInstance() {
@@ -46,7 +46,8 @@ public class Logger
         if(_verbosity.getValue() > Log.DEBUG.getValue())
             return;
         
-        System.out.print(ansi().fg(BLUE).a(String.format("[%s] DEBUG: %s\n", getTimestamp(), msg)).reset().reset());
+        // System.out.print(ansi().fg(BLUE).a(String.format("[%s] DEBUG: %s\n", getTimestamp(), msg)).reset().reset());
+        System.out.print(String.format("[%s] DEBUG: %s\n", getTimestamp(), msg));
     }
 
     /**
@@ -59,7 +60,8 @@ public class Logger
         if(_verbosity.getValue() > Log.STATUS.getValue())
             return;
 
-        System.out.print(ansi().fg(GREEN).a(String.format("[%s] STATUS: %s\n", getTimestamp(), msg)).reset());
+        // System.out.print(ansi().fg(GREEN).a(String.format("[%s] STATUS: %s\n", getTimestamp(), msg)).reset());
+        System.out.print(String.format("[%s] STATUS: %s\n", getTimestamp(), msg));
     }
 
     /**
@@ -78,10 +80,12 @@ public class Logger
             String fileCaller = Thread.currentThread().getStackTrace()[4].getClassName();
             String methodCaller = Thread.currentThread().getStackTrace()[4].getMethodName();
             int lineNumber = Thread.currentThread().getStackTrace()[4].getLineNumber();
-            System.out.print(ansi().fg(YELLOW).a(String.format("[%s] WARNING: %s at %s() in %s:%s\n", getTimestamp(), msg, methodCaller, fileCaller, lineNumber)).reset());
+            // System.out.print(ansi().fg(YELLOW).a(String.format("[%s] WARNING: %s at %s() in %s:%s\n", getTimestamp(), msg, methodCaller, fileCaller, lineNumber)).reset());
+            System.out.print(String.format("[%s] WARNING: %s at %s() in %s:%s\n", getTimestamp(), msg, methodCaller, fileCaller, lineNumber));
         }
         else {
-            System.out.print(ansi().fg(YELLOW).a(String.format("[%s] WARNING: %s\n", getTimestamp(), msg)).reset());
+            // System.out.print(ansi().fg(YELLOW).a(String.format("[%s] WARNING: %s\n", getTimestamp(), msg)).reset());
+            System.out.print(String.format("[%s] WARNING: %s\n", getTimestamp(), msg));
         }
     }
 
@@ -103,10 +107,12 @@ public class Logger
             String fileCaller = Thread.currentThread().getStackTrace()[4].getClassName();
             String methodCaller = Thread.currentThread().getStackTrace()[4].getMethodName();
             int lineNumber = Thread.currentThread().getStackTrace()[4].getLineNumber();
-            System.out.print(ansi().fg(RED).a(String.format("[%s] ERROR: %s at %s() in %s:%s\n", getTimestamp(), msg, methodCaller, fileCaller, lineNumber)).reset());
+            // System.out.print(ansi().fg(RED).a(String.format("[%s] ERROR: %s at %s() in %s:%s\n", getTimestamp(), msg, methodCaller, fileCaller, lineNumber)).reset());
+            System.out.print(String.format("[%s] ERROR: %s at %s() in %s:%s\n", getTimestamp(), msg, methodCaller, fileCaller, lineNumber));
         }
         else {
-            System.out.print(ansi().fg(RED).a(String.format("[%s] ERROR: %s\n", getTimestamp(), msg)).reset());
+            // System.out.print(ansi().fg(RED).a(String.format("[%s] ERROR: %s\n", getTimestamp(), msg)).reset());
+            System.out.print(String.format("[%s] ERROR: %s\n", getTimestamp(), msg));
         }
     }
 
