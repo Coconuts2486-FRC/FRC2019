@@ -8,8 +8,6 @@ import frc.enums.Log;
 
 import org.fusesource.jansi.AnsiConsole;
 
-import edu.wpi.first.wpilibj.DriverStation;
-
 import static org.fusesource.jansi.Ansi.*;
 import static org.fusesource.jansi.Ansi.Color.*;
 

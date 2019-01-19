@@ -3,6 +3,7 @@ package frc.subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import frc.robot.RobotMap;
 
 /**
@@ -16,6 +17,8 @@ public class DriveTrain
     public TalonSRX right = null;
     public TalonSRX leftFollower  = null;
     public TalonSRX rightFollower = null;
+
+    public Solenoid driveShifters = null;
 
     private DriveTrain() {
         assign();
@@ -31,7 +34,7 @@ public class DriveTrain
 
     private void assign()
     {
-        String[] keys = {"left", "right", "leftFollower", "rightFollower"};
+        String[] keys = {"left", "right", "leftFollower", "rightFollower", "driveShifter"};
         
         if(RobotMap.config.motorControllerIDs.containsKey(keys[0]))
             left = new TalonSRX(RobotMap.config.motorControllerIDs.get(keys[0]));
@@ -52,6 +55,11 @@ public class DriveTrain
             rightFollower = new TalonSRX(RobotMap.config.motorControllerIDs.get(keys[3]));
         else
             RobotMap.logger.printError(String.format("Key %s could not be found.", keys[3]));
+
+        if(RobotMap.config.pneumaticIDs.containsKey(keys[4]))
+            driveShifters = new Solenoid(RobotMap.config.motorControllerIDs.get(keys[4]));
+        else
+            RobotMap.logger.printError(String.format("Key %s could not be found.", keys[4]));
     }
 
     public void stop() {
