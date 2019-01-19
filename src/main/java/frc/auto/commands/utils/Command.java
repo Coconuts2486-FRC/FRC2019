@@ -6,7 +6,10 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
+/**
+ * Declares a class as a valid Command.
+ * Provides the {@code}name{@code} parameter so that the serialized data can preserve the type.
+ */
 @Documented
 @Target(ElementType.TYPE)
 @Inherited
