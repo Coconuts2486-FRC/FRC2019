@@ -21,7 +21,8 @@ public class ICommand {
     @Expose(serialize = true, deserialize = true)
     public HashMap<String, Double> parameters;
 
-    public ICommand() { parameters = new HashMap<>(4, 1);}
+    public ICommand() { parameters = new HashMap<>(4, 1); }
+    public ICommand(HashMap<String, Double> parameters) { this.parameters = parameters; }
 
     /**
      * Defines what action to perform when running.

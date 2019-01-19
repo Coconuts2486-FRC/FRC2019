@@ -2,6 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.auto.commands.utils.Command;
+import frc.auto.commands.utils.ICommand;
 import frc.auto.missions.AutoMission;
 import frc.debug.FileHandler;
 import frc.opmode.Autonomous;
@@ -15,6 +17,11 @@ import static frc.robot.RobotMap.*;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Set;
+
+import org.reflections.Reflections;
 
 public class Robot extends TimedRobot {
 
@@ -25,8 +32,7 @@ public class Robot extends TimedRobot {
     init();
 
     AutoMission m = new AutoMission();
-    AutoMission.Test123 test = m.new Test123();
-
+    AutoMission.Test test = m.new Test();
     test.testMission();
 
     // Politely ask the JVM to clean house.

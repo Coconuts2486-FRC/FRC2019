@@ -1,5 +1,6 @@
 package frc.auto.commands;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Stopwatch;
@@ -18,7 +19,7 @@ public class Sleep extends ICommand {
      * Empty constructor for use in serialization. Do not add anything to this!
      * Do not call past midnight.
      */
-    public Sleep() { super(); }
+    public Sleep(HashMap<String, Double> map) { super(map); }
 
     /**
      * Creates a new instance of Drive with the following parameters.

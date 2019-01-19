@@ -86,7 +86,7 @@ public class AutoMission extends OpMode {
         return gson.fromJson(s, AutoMission.class);
     }
 
-    public class Test123 {
+    public class Test {
         public void testCommand() {
             Drive drive = new Drive(0.5, 0.5, 1000);
             // Sleep sleep = new Sleep(2000);
