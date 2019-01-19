@@ -10,4 +10,7 @@
     "driveShifter": 0,
     "pcm": 21,
   }
+  "Input Devices IDs": {
+    "joystick1": 0,
+  }
 }

@@ -3,7 +3,9 @@ package frc.subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Joystick.AxisType;
 import frc.robot.RobotMap;
 
 /**
@@ -20,6 +22,8 @@ public class DriveTrain
 
     public Solenoid driveShifters = null;
 
+    public Joystick joystick1 = null;
+
     private DriveTrain() {
         assign();
     }
@@ -34,7 +38,7 @@ public class DriveTrain
 
     private void assign()
     {
-        String[] keys = {"left", "right", "leftFollower", "rightFollower", "driveShifter", "pcm"};
+        String[] keys = {"left", "right", "leftFollower", "rightFollower", "driveShifter", "pcm", "joystick1"};
         
         if(RobotMap.config.motorControllerIDs.containsKey(keys[0]))
             left = new TalonSRX(RobotMap.config.motorControllerIDs.get(keys[0]));
@@ -60,6 +64,10 @@ public class DriveTrain
             driveShifters = new Solenoid(RobotMap.config.pneumaticIDs.get(keys[5]), RobotMap.config.pneumaticIDs.get(keys[4]));
         else
             RobotMap.logger.printError(String.format("Key %s could not be found.", keys[4]));
+        if(RobotMap.config.inputDevicesIDs.containsKey(keys[6]))
+            joystick1 = new Joystick(RobotMap.config.inputDevicesIDs.get(keys[6]));
+        else
+            RobotMap.logger.printError(String.format("Key %s could not be found.", keys[6]));
     }
 
     public void stop() {
@@ -75,5 +83,29 @@ public class DriveTrain
     public void set(double left, double right) {
         this.left.set(ControlMode.PercentOutput, left);
         this.right.set(ControlMode.PercentOutput, right);
+    }
+
+    public void setShifter(boolean shifterOnOff) {
+        driveShifters.set(shifterOnOff);
+    }
+
+    public boolean getShifterState() {
+        return
+        driveShifters.get();
+    }
+
+    public double getJoystickX() {
+        return
+        joystick1.getAxis(AxisType.kX);
+    }
+
+    public double getJoystickY() {
+        return
+        joystick1.getAxis(AxisType.kY);
+    }
+
+    public boolean isTriggerPressed() {
+        return
+        joystick1.getTriggerPressed();
     }
 }

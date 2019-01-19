@@ -36,7 +36,8 @@ public class RobotConfig extends Serializable {
     public HashMap<String, Byte> motorControllerIDs = new HashMap<>(13, 1); // 13 motor controllers, double at 100% load factor
     @SerializedName("Pneumatic IDs")
     public HashMap<String, Byte> pneumaticIDs = new HashMap<>(5, 1); // 5 pneumatic devices, double at 100% load factor
-
+    @SerializedName("Input Devices IDs")
+    public HashMap<String, Byte> inputDevicesIDs = new HashMap<>(3, 1);
     /** Methods for access. */ 
 
     /**
