@@ -3,9 +3,9 @@ package frc.subsystem;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Joystick.AxisType;
 import frc.robot.RobotMap;
 
 /**
@@ -21,6 +21,7 @@ public class DriveTrain
     public TalonSRX rightFollower = null;
 
     public Solenoid driveShifters = null;
+    public Compressor compressor  = null;
 
     public Joystick joystick1 = null;
 
@@ -60,8 +61,10 @@ public class DriveTrain
         else
             RobotMap.logger.printError(String.format("Key %s could not be found.", keys[3]));
 
-        if(RobotMap.config.pneumaticIDs.containsKey(keys[4]) && RobotMap.config.pneumaticIDs.containsKey(keys[5]))
+        if(RobotMap.config.pneumaticIDs.containsKey(keys[4]) && RobotMap.config.pneumaticIDs.containsKey(keys[5])) {
             driveShifters = new Solenoid(RobotMap.config.pneumaticIDs.get(keys[5]), RobotMap.config.pneumaticIDs.get(keys[4]));
+            compressor = new Compressor(RobotMap.config.pneumaticIDs.get(keys[5]));
+        }
         else
             RobotMap.logger.printError(String.format("Key %s could not be found.", keys[4]));
             
@@ -71,16 +74,28 @@ public class DriveTrain
             RobotMap.logger.printError(String.format("Key %s could not be found.", keys[6]));
     }
 
+    /**
+     * Stop the motors from running.
+     */
     public void stop() {
         left.set(ControlMode.PercentOutput, 0);
         right.set(ControlMode.PercentOutput, 0);
     }
 
+    /**
+     * Set the left and right motors to a specified speed.
+     * @param speed Desired speed from -1 to 1.
+     */
     public void set(double speed) {
         left.set(ControlMode.PercentOutput, speed);
         right.set(ControlMode.PercentOutput, speed);
     }
 
+    /**
+     * Sets the left and right motors independently to a specified speed.
+     * @param left Desired speed for the left from -1 to 1.
+     * @param right Desired speed for the right from -1 to 1.
+     */
     public void set(double left, double right) {
         this.left.set(ControlMode.PercentOutput, left);
         this.right.set(ControlMode.PercentOutput, right);
@@ -97,13 +112,12 @@ public class DriveTrain
     }
 
     public double getJoystickX() {
-        return
-        joystick1.getAxis(AxisType.kX);
+        return joystick1.getX();
     }
 
     public double getJoystickY() {
         return
-        joystick1.getAxis(AxisType.kY);
+        joystick1.getY();
     }
 
     public boolean isTriggerPressed() {

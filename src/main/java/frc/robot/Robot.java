@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.auto.missions.AutoMission;
@@ -10,6 +11,7 @@ import frc.opmode.OpMode;
 import frc.opmode.TeleOp;
 import frc.opmode.Test;
 import frc.subsystem.DriveTrain;
+import frc.subsystem.Limelight;
 
 import static frc.robot.RobotMap.*;
 
@@ -21,10 +23,7 @@ public class Robot extends TimedRobot {
   private OpMode _opMode;
 
   public Robot() {
-    String s = RobotConfig.generate().serialize(true);
-    logger.printDebug(s);
-
-    // Initialize the RobotMap instances.
+    // Initialize the robot.
     init();
 
     // Politely ask the JVM to clean house.
@@ -85,8 +84,7 @@ public class Robot extends TimedRobot {
 
   public void init() {
     logger.printStatus("Initializing robot.");
-
-    //TODO: Test to see if the virtualization test works.
+    
     // Tests if the program is deployed to the robot.
     if(new File("/home/lvuser/README_File_Paths.txt").exists()) {
       FileHandler.loadConfig(); // Loads config file.
@@ -106,12 +104,19 @@ public class Robot extends TimedRobot {
     }
 
     driveTrain.init();
+    limelight = Limelight.getInstance();
 
+    CameraServer.getInstance().startAutomaticCapture();
   }
 
   public void testAuto() {
     AutoMission m = new AutoMission();
     AutoMission.Test test = m.new Test();
     test.testMission();
+  }
+
+  public void testConfig() {
+    String s = RobotConfig.generate().serialize(true);
+    logger.printDebug(s);
   }
 }
