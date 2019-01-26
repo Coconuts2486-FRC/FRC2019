@@ -13,7 +13,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
-import frc.debug.Serializable;
+import frc.utils.Serializable;
 
 /**
  * Provides the configuration details of the robot, such as ports, PID values, and speeds.

@@ -2,6 +2,8 @@ package frc.opmode;
 
 import static frc.robot.RobotMap.*;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+
 /**
  * TeleOp
  */
@@ -13,6 +15,7 @@ public class TeleOp extends OpMode {
 
     @Override
     public void init() {
+        Shuffleboard.selectTab("TeleOp");
         driveTrain.compressor.setClosedLoopControl(true);
     }
 
@@ -26,7 +29,7 @@ public class TeleOp extends OpMode {
         }
         else
         {
-            driveTrain.set(driveTrain.getJoystickY() + -driveTrain.getJoystickX(), driveTrain.getJoystickY() - -driveTrain.getJoystickX());
+            driveTrain.set(-driveTrain.getJoystickY() + driveTrain.getJoystickX(), -driveTrain.getJoystickY() - driveTrain.getJoystickX());
             
             if (driveTrain.isTriggerPressed())
                 driveTrain.setShifter(!driveTrain.getShifterState());

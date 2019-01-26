@@ -1,6 +1,7 @@
 package frc.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -74,6 +75,63 @@ public class DriveTrain
             RobotMap.logger.printError(String.format("Key %s could not be found.", keys[6]));
     }
 
+    public void init() {
+        // Set the left and right followers based on their master IDs.
+        leftFollower.set(ControlMode.Follower, left.getDeviceID());
+        rightFollower.set(ControlMode.Follower, right.getDeviceID());
+        // Invert the motor outputs to set forward in the right direction.
+        RobotMap.driveTrain.left.setInverted(true);
+        RobotMap.driveTrain.leftFollower.setInverted(true);
+
+        initMotionProfiling();
+        zeroSensors();
+    }
+
+    public void zeroSensors() {
+        // int absolutePositionLeft = RobotMap.driveTrain.left.getSensorCollection().getPulseWidthPosition();
+		/* mask out overflows, keep bottom 12 bits */
+		// absolutePositionLeft &= 0xFFF;
+		/* set the quadrature (relative) sensor to match absolute */
+        RobotMap.driveTrain.left.setSelectedSensorPosition(0, 0, 10);
+
+        // int absolutePositionLeft = RobotMap.driveTrain.left.getSensorCollection().getPulseWidthPosition();
+		/* mask out overflows, keep bottom 12 bits */
+		// absolutePositionLeft &= 0xFFF;
+		/* set the quadrature (relative) sensor to match absolute */
+        RobotMap.driveTrain.right.setSelectedSensorPosition(0, 0, 10);
+    }
+
+    private void initMotionProfiling() {
+        RobotMap.driveTrain.left. configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+        RobotMap.driveTrain.right.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+
+        RobotMap.driveTrain.left. setSensorPhase(false);
+        RobotMap.driveTrain.right.setSensorPhase(false);
+
+        //RobotMap.driveTrain.left. configAllowableClosedloopError(0, 20);
+        //RobotMap.driveTrain.right.configAllowableClosedloopError(0, 20);
+
+        // double kP = 0.25/4096;
+        // double kI = kP/100;
+        // double kD = kP * 10;
+        // double kF = 0.171;
+
+        double kP = 0.1;
+        double kI = 0;
+        double kD = 0;
+        double kF = 0;
+
+        setPID(left,  kP, kI, kD, kF);
+        setPID(right, kP, kI, kD, kF);
+    }
+
+    private void setPID(TalonSRX talon, double kP, double kI, double kD, double kF) {
+        talon.config_kP(0, kP);
+        talon.config_kI(0, kI);
+        talon.config_kD(0, kD);
+        talon.config_kF(0, kF);
+    }
+
     /**
      * Stop the motors from running.
      */
@@ -125,10 +183,11 @@ public class DriveTrain
         joystick1.getTriggerPressed();
     }
 
-    public void init() {
-        leftFollower.set(ControlMode.Follower, left.getDeviceID());
-        rightFollower.set(ControlMode.Follower, right.getDeviceID());
-        RobotMap.driveTrain.right.setInverted(true);
-        RobotMap.driveTrain.rightFollower.setInverted(true);
+    public void configPeakOutput(double maxSpeed) {
+        left.configPeakOutputForward(maxSpeed);
+        right.configPeakOutputForward(maxSpeed);
+
+        left.configPeakOutputReverse(maxSpeed);
+        right.configPeakOutputReverse(maxSpeed);
     }
 }

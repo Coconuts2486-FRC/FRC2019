@@ -1,5 +1,7 @@
 package frc.opmode;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+
 /**
  * Test
  */
@@ -11,7 +13,7 @@ public class Test extends OpMode {
 
     @Override
     public void init() {
-
+        Shuffleboard.selectTab("Test");
     }
 
     @Override

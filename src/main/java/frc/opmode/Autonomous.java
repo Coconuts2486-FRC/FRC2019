@@ -2,6 +2,11 @@ package frc.opmode;
 
 import static frc.robot.RobotMap.*;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.RobotMap;
+
 /**
  * Autonomous
  */
@@ -13,13 +18,16 @@ public class Autonomous extends OpMode {
 
     @Override
     public void init() {
+        Shuffleboard.selectTab("Autonomous");
         driveTrain.compressor.setClosedLoopControl(false);
+        RobotMap.driveTrain.zeroSensors();
+        driveTrain.configPeakOutput(0.3);
     }
 
     @Override
     public void loop() {
-        double[] speeds = limelight.getValue();
-        driveTrain.set(speeds[0], speeds[1]);
+        driveTrain.left. set(ControlMode.Position, 37696);
+        driveTrain.right.set(ControlMode.Position, 37696);
     }
 
 }
