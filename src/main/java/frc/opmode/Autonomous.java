@@ -2,7 +2,9 @@ package frc.opmode;
 
 import static frc.robot.RobotMap.*;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
+import java.util.concurrent.TimeUnit;
+
+import com.google.common.base.Stopwatch;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.RobotMap;
@@ -19,15 +21,24 @@ public class Autonomous extends OpMode {
     @Override
     public void init() {
         Shuffleboard.selectTab("Autonomous");
-        driveTrain.compressor.setClosedLoopControl(false);
+        RobotMap.compressor.set(false);
         RobotMap.driveTrain.zeroSensors();
         driveTrain.configPeakOutput(0.3);
     }
 
     @Override
     public void loop() {
-        driveTrain.left. set(ControlMode.Position, 37696);
-        driveTrain.right.set(ControlMode.Position, 37696);
+        // RobotMap.driveTrain.set(1, 1);
+        // sleep(5000);
+        // RobotMap.driveTrain.set(-1, -1);
+        // sleep(5000);
+
+        limelight.drive();
     }
 
+    @SuppressWarnings("unused")
+    private void sleep(long duration) {
+        Stopwatch sw = Stopwatch.createStarted();
+        while(sw.elapsed(TimeUnit.MILLISECONDS) <= duration);
+    }
 }

@@ -107,11 +107,4 @@ public class AutoMission extends OpMode {
             m.init();
         }
     }
-
-    // public class AutoMissionDeserializer implements JsonDeserializer<AutoMission> {
-    //     @Override
-	// 	public AutoMission deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-    //         AutoMission mission = new AutoMission();
-	// 	}
-    // }
 }

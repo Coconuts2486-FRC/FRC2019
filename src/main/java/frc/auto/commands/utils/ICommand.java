@@ -1,7 +1,9 @@
 package frc.auto.commands.utils;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
+import com.google.common.base.Stopwatch;
 import com.google.gson.annotations.Expose;
 
 import frc.auto.missions.AutoMission;
@@ -31,5 +33,14 @@ public class ICommand {
     public void run()
     {
         RobotMap.logger.printWarning("Default run() command in ICommand. Overload me!");
+    }
+
+    /**
+     * Sleeps for the specified duration in milliseconds.
+     * @param duration Time to sleep for.
+     */
+    protected void sleep(long duration) {
+        Stopwatch sw = Stopwatch.createStarted();
+        while(sw.elapsed(TimeUnit.MILLISECONDS) <= duration);
     }
 }

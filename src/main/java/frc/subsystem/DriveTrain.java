@@ -2,11 +2,15 @@ package frc.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
+import frc.enums.ElevatorPositions;
+import frc.enums.IDs;
+import frc.enums.Shifter;
 import frc.robot.RobotMap;
 
 /**
@@ -22,9 +26,10 @@ public class DriveTrain
     public TalonSRX rightFollower = null;
 
     public Solenoid driveShifters = null;
-    public Compressor compressor  = null;
 
     public Joystick joystick1 = null;
+    public Joystick joystick2 = null;
+    public Joystick secondaryOperator = null;
 
     private DriveTrain() {
         assign();
@@ -38,8 +43,21 @@ public class DriveTrain
         return instance;
     }
 
-    private void assign()
-    {
+    private void assign() {
+        left  = new TalonSRX(IDs.LEFT.getValue());
+        right = new TalonSRX(IDs.RIGHT.getValue());
+        leftFollower  = new TalonSRX(IDs.LEFT_FOLLOWER.getValue());
+        rightFollower = new TalonSRX(IDs.RIGHT_FOLLOWER.getValue());
+
+        driveShifters = new Solenoid(IDs.PCM.getValue(), IDs.DRIVE_SHIFTER.getValue());
+
+        joystick1 = new Joystick(IDs.LEFT_JOYSTICK.getValue());
+        joystick2 = new Joystick(IDs.RIGHT_JOYSTICK.getValue());
+        secondaryOperator = new Joystick(IDs.SECONDARY_OPERATOR.getValue());
+    }
+
+    @SuppressWarnings("unused")
+    private void assignKeys() {
         String[] keys = {"left", "right", "leftFollower", "rightFollower", "driveShifter", "pcm", "joystick1"};
         
         if(RobotMap.config.motorControllerIDs.containsKey(keys[0]))
@@ -62,10 +80,8 @@ public class DriveTrain
         else
             RobotMap.logger.printError(String.format("Key %s could not be found.", keys[3]));
 
-        if(RobotMap.config.pneumaticIDs.containsKey(keys[4]) && RobotMap.config.pneumaticIDs.containsKey(keys[5])) {
+        if(RobotMap.config.pneumaticIDs.containsKey(keys[4]) && RobotMap.config.pneumaticIDs.containsKey(keys[5]))
             driveShifters = new Solenoid(RobotMap.config.pneumaticIDs.get(keys[5]), RobotMap.config.pneumaticIDs.get(keys[4]));
-            compressor = new Compressor(RobotMap.config.pneumaticIDs.get(keys[5]));
-        }
         else
             RobotMap.logger.printError(String.format("Key %s could not be found.", keys[4]));
             
@@ -80,8 +96,15 @@ public class DriveTrain
         leftFollower.set(ControlMode.Follower, left.getDeviceID());
         rightFollower.set(ControlMode.Follower, right.getDeviceID());
         // Invert the motor outputs to set forward in the right direction.
-        RobotMap.driveTrain.left.setInverted(true);
-        RobotMap.driveTrain.leftFollower.setInverted(true);
+        left.setInverted(InvertType.InvertMotorOutput);
+        leftFollower.setInverted(InvertType.FollowMaster);
+        right.setInverted(InvertType.None);
+        rightFollower.setInverted(InvertType.FollowMaster);
+
+        left.setNeutralMode(NeutralMode.Brake);
+        leftFollower.setNeutralMode(NeutralMode.Brake);
+        right.setNeutralMode(NeutralMode.Brake);
+        rightFollower.setNeutralMode(NeutralMode.Brake);
 
         initMotionProfiling();
         zeroSensors();
@@ -160,13 +183,24 @@ public class DriveTrain
         
     }
 
-    public void setShifter(boolean shifterOnOff) {
-        driveShifters.set(shifterOnOff);
+    public void setShifter(Shifter value) {
+        driveShifters.set(value.getValue());
     }
 
-    public boolean getShifterState() {
-        return
-        driveShifters.get();
+    public void setShifter(boolean value) {
+        driveShifters.set(value);
+    }
+
+    public Shifter getShifterState() {
+        return Shifter.valueOf(driveShifters.get());
+    }
+
+    /**
+     * Gets the speeds from the encoders attached to the drivetrain.
+     * @return An array of speeds. Index of 0 is the left, and 1 is the right.
+     */
+    public double[] getSpeeds() {
+        return new double[] { left.getSelectedSensorVelocity(), right.getSelectedSensorVelocity() };
     }
 
     public double getJoystickX() {
@@ -178,6 +212,18 @@ public class DriveTrain
         joystick1.getY();
     }
 
+    public double getJoystick2X()
+    {
+        return
+        joystick2.getX();
+    }
+
+    public double getJoystick2Y()
+    {
+        return
+        joystick2.getY();
+    }
+
     public boolean isTriggerPressed() {
         return
         joystick1.getTriggerPressed();
@@ -187,7 +233,22 @@ public class DriveTrain
         left.configPeakOutputForward(maxSpeed);
         right.configPeakOutputForward(maxSpeed);
 
-        left.configPeakOutputReverse(maxSpeed);
-        right.configPeakOutputReverse(maxSpeed);
+        left.configPeakOutputReverse(-maxSpeed);
+        right.configPeakOutputReverse(-maxSpeed);
+    }
+
+    public ElevatorPositions getDesiredElevator() {
+        int low = 4;
+        int med = 5;
+        int high = 6;
+
+        if(secondaryOperator.getRawButtonPressed(low))
+            return ElevatorPositions.CARGO_LOW;
+        else if(secondaryOperator.getRawButtonPressed(med))
+            return ElevatorPositions.CARGO_MEDIUM;
+        else if(secondaryOperator.getRawButtonPressed(high))
+            return ElevatorPositions.CARGO_HIGH;
+        else
+            return ElevatorPositions.NEUTRAL;
     }
 }

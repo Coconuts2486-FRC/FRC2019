@@ -19,6 +19,12 @@ public class DataPublisher implements java.lang.Runnable {
         instance.getEntry("Left Error").setDouble(RobotMap.driveTrain.left.getClosedLoopError(0));
         instance.getEntry("Right Error").setDouble(RobotMap.driveTrain.right.getClosedLoopError(0));
 
-        instance.getEntry("Heading").setDouble(RobotMap.pigeon.getHeading());
+        //instance.getEntry("Heading").setDouble(RobotMap.pigeon.getHeading());
+
+        instance.getEntry("Shifters").setString(RobotMap.driveTrain.getShifterState().name());
+
+        instance.getEntry("Elevator Ultrasonic").setDouble(RobotMap.elevator.getRawUltrasonic());
+        instance.getEntry("Elevator Inner Position").setDouble(RobotMap.elevator.getInnerEncoder());
+        instance.getEntry("Elevator Outer Position").setDouble(RobotMap.elevator.getOuterEncoder());
     }
 }
