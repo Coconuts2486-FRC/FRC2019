@@ -1,22 +1,14 @@
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.auto.missions.AutoMission;
-import frc.debug.FileHandler;
 import frc.opmode.Autonomous;
 import frc.opmode.Disabled;
 import frc.opmode.OpMode;
 import frc.opmode.TeleOp;
 import frc.opmode.Test;
-import frc.subsystem.DriveTrain;
-import frc.subsystem.Limelight;
 
 import static frc.robot.RobotMap.*;
-
-import java.io.File;
-import java.nio.file.Paths;
 
 public class Robot extends TimedRobot {
 
@@ -80,33 +72,6 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     _opMode.loop();
-  }
-
-  public void init() {
-    logger.printStatus("Initializing robot.");
-    
-    // Tests if the program is deployed to the robot.
-    if(new File("/home/lvuser/README_File_Paths.txt").exists()) {
-      FileHandler.loadConfig(); // Loads config file.
-      DriverStation ds = DriverStation.getInstance();
-
-      if(ds.isFMSAttached())
-        logger.printStatus(String.format("You are playing %s match %s at %s.", ds.getMatchType(), ds.getMatchNumber(), ds.getLocation()));
-
-      RobotMap.driveTrain = DriveTrain.getInstance();
-    }
-
-    // Program is run locally. Load the config file elsewhere.
-    else {
-      // Gets the config file from the robot directory path.
-      String s = Paths.get("").toAbsolutePath().toString() + "\\usb\\config\\config.txt";
-      FileHandler.loadConfig(s);
-    }
-
-    driveTrain.init();
-    limelight = Limelight.getInstance();
-
-    CameraServer.getInstance().startAutomaticCapture();
   }
 
   public void testAuto() {

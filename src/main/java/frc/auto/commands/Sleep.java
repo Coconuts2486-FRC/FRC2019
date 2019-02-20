@@ -1,22 +1,19 @@
 package frc.auto.commands;
 
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
-
-import com.google.common.base.Stopwatch;
 
 import frc.auto.commands.utils.Command;
 import frc.auto.commands.utils.ICommand;
 import frc.robot.RobotMap;
 
 /**
- * Sleep
+ * Sleep the robot for a specific amount of time.
  */
 
 @Command(name = "Sleep")
 public class Sleep extends ICommand {
     /**
-     * Empty constructor for use in serialization. Do not add anything to this!
+     * Constructor for use in serialization. Do not add anything to this!
      * Do not call past midnight.
      */
     public Sleep(HashMap<String, Double> map) { super(map); }
@@ -40,15 +37,6 @@ public class Sleep extends ICommand {
     @Override
     public void run() {
         RobotMap.logger.printStatus(String.format("Sleeping for %s ms.", parameters.get("duration")));
-        sleep(Double.valueOf(parameters.get("duration")).longValue());
-    }
-
-    /**
-     * Sleeps for the specified duration in milliseconds.
-     * @param duration Time to sleep for.
-     */
-    private void sleep(long duration) {
-        Stopwatch sw = Stopwatch.createStarted();
-        while(sw.elapsed(TimeUnit.MILLISECONDS) <= duration);
+        super.sleep(Double.valueOf(parameters.get("duration")).longValue());
     }
 }

@@ -1,9 +1,6 @@
 package frc.auto.commands;
 
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
-
-import com.google.common.base.Stopwatch;
 
 import frc.auto.commands.utils.Command;
 import frc.auto.commands.utils.ICommand;
@@ -45,15 +42,6 @@ public class Drive extends ICommand {
     public void run() {
         RobotMap.logger.printStatus(String.format("Driving left with speed %s and right with %s for %s ms.", parameters.get("speedLeft"), parameters.get("speedRight"), parameters.get("duration")));
         RobotMap.driveTrain.set(parameters.get("speedLeft"), parameters.get("speedRight"));
-        sleep(Double.valueOf(parameters.get("duration")).longValue());
-    }
-
-    /**
-     * Sleeps for the specified duration in milliseconds.
-     * @param duration Time to sleep for.
-     */
-    private void sleep(long duration) {
-        Stopwatch sw = Stopwatch.createStarted();
-        while(sw.elapsed(TimeUnit.MILLISECONDS) <= duration);
+        super.sleep(Double.valueOf(parameters.get("duration")).longValue());
     }
 }

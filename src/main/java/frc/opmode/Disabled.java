@@ -1,5 +1,7 @@
 package frc.opmode;
 
+import frc.robot.RobotMap;
+
 /**
  * Disabled
  */
@@ -11,7 +13,7 @@ public class Disabled extends OpMode {
 
     @Override
     public void init() {
-
+        RobotMap.limelight.setLights(false);
     }
 
     @Override

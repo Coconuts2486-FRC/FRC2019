@@ -1,6 +1,6 @@
 package frc.enums;
 
-import frc.debug.Logger;
+import frc.utils.Logger;
 
 /**
  * Defines the four debugging levels: debug, status, warning, and error.
