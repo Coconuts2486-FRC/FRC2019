@@ -16,8 +16,7 @@ import frc.robot.RobotMap;
 /**
  * DriveTrain
  */
-public class DriveTrain
-{
+public class DriveTrain {
     private static DriveTrain instance = null;
 
     public TalonSRX left  = null;
@@ -27,8 +26,8 @@ public class DriveTrain
 
     public Solenoid driveShifters = null;
 
-    public Joystick joystick1 = null;
-    public Joystick joystick2 = null;
+    public Joystick leftJoystick = null;
+    public Joystick rightJoystick = null;
     public Joystick secondaryOperator = null;
 
     private DriveTrain() {
@@ -51,8 +50,8 @@ public class DriveTrain
 
         driveShifters = new Solenoid(IDs.PCM.getValue(), IDs.DRIVE_SHIFTER.getValue());
 
-        joystick1 = new Joystick(IDs.LEFT_JOYSTICK.getValue());
-        joystick2 = new Joystick(IDs.RIGHT_JOYSTICK.getValue());
+        leftJoystick  = new Joystick(IDs.LEFT_JOYSTICK.getValue());
+        rightJoystick = new Joystick(IDs.RIGHT_JOYSTICK.getValue());
         secondaryOperator = new Joystick(IDs.SECONDARY_OPERATOR.getValue());
     }
 
@@ -86,7 +85,7 @@ public class DriveTrain
             RobotMap.logger.printError(String.format("Key %s could not be found.", keys[4]));
             
         if(RobotMap.config.inputDeviceIDs.containsKey(keys[6]))
-            joystick1 = new Joystick(RobotMap.config.inputDeviceIDs.get(keys[6]));
+            leftJoystick = new Joystick(RobotMap.config.inputDeviceIDs.get(keys[6]));
         else
             RobotMap.logger.printError(String.format("Key %s could not be found.", keys[6]));
     }
@@ -204,29 +203,25 @@ public class DriveTrain
     }
 
     public double getJoystickX() {
-        return joystick1.getX();
+        return leftJoystick.getX();
     }
 
     public double getJoystickY() {
-        return
-        joystick1.getY();
+        return leftJoystick.getY();
     }
 
     public double getJoystick2X()
     {
-        return
-        joystick2.getX();
+        return rightJoystick.getX();
     }
 
     public double getJoystick2Y()
     {
-        return
-        joystick2.getY();
+        return rightJoystick.getY();
     }
 
     public boolean isTriggerPressed() {
-        return
-        joystick1.getTriggerPressed();
+        return leftJoystick.getTriggerPressed();
     }
 
     public void configPeakOutput(double maxSpeed) {

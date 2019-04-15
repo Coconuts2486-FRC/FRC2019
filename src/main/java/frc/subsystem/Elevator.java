@@ -2,30 +2,35 @@ package frc.subsystem;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import frc.enums.ElevatorPositions;
 import frc.enums.IDs;
 import frc.enums.PIDFeedback;
+import frc.robot.RobotMap;
 
 /**
  * Handles the elevator and its relevant systems.
  */
 public class Elevator extends ISubsystem {
-    private TalonSRX innerStage;
-    private TalonSRX outerStage;
+    public TalonSRX innerStage;
+    public TalonSRX outerStage;
     private TalonSRX rollers;
+    //public TalonSRX vacuumPump;
 
-    private AnalogInput  ultrasonic;
-    private DigitalInput elevatorZero;
+    public DigitalInput elevatorZero;
 
     private Solenoid elevator;
     private Solenoid vacuumEnable;
     private Solenoid vacuumRelease;
+    //public Solenoid  climbing;
 
+    //private boolean hasZeroed = false;
+
+    public DigitalInput IRBeam;
 
     private static Elevator instance = null;
     private Elevator() {
@@ -44,16 +49,19 @@ public class Elevator extends ISubsystem {
      */
     @Override
     protected void assign() {
-        innerStage = new TalonSRX(IDs.ELEVATOR_INNER.getValue());
-        outerStage = new TalonSRX(IDs.ELEVATOR_OUTER.getValue());
-        rollers    = new TalonSRX(IDs.ROLLERS.getValue());
+        innerStage   = new TalonSRX(IDs.ELEVATOR_INNER.getValue());
+        outerStage   = new TalonSRX(IDs.ELEVATOR_OUTER.getValue());
+        rollers      = new TalonSRX(IDs.ROLLERS.getValue());
+        //vacuumPump = new TalonSRX(13);
 
-        ultrasonic   = new AnalogInput(IDs.ELEVATOR_ULTRASONIC.getValue());
         elevatorZero = new DigitalInput(IDs.ELEVATOR_DIGITAL.getValue());
 
         elevator      = new Solenoid(IDs.PCM.getValue(), IDs.ELEVATOR_PISTONS.getValue());
         vacuumEnable  = new Solenoid(IDs.PCM.getValue(), IDs.VACUUM_ENABLE.getValue());
         vacuumRelease = new Solenoid(IDs.PCM.getValue(), IDs.VACUUM_DISABLE.getValue());
+        //climbing      = new Solenoid(IDs.PCM.getValue(), 3);
+
+        IRBeam = new DigitalInput(IDs.ELEVATOR_LIGHT.getValue());
     }
 
     /**
@@ -63,7 +71,11 @@ public class Elevator extends ISubsystem {
         //innerStage.setInverted(InvertType.InvertMotorOutput);
         innerStage.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
         outerStage.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-        innerStage.setSensorPhase(true);
+        innerStage.setSensorPhase(false);
+        outerStage.setSensorPhase(true);
+
+        outerStage.configClosedLoopPeakOutput(0, 1);
+        outerStage.configClosedloopRamp(0.2);
 
         configPIDF(innerStage, PIDFeedback.INNER_ELEVATOR);
         configPIDF(outerStage, PIDFeedback.OUTER_ELEVATOR);
@@ -75,6 +87,7 @@ public class Elevator extends ISubsystem {
      * @param talon Talon instance to zero.
      */
     @Deprecated
+    @SuppressWarnings("unused")
     private void zeroEncoder(TalonSRX talon) {
         int absolutePosition = talon.getSensorCollection().getPulseWidthPosition();
 		/* mask out overflows, keep bottom 12 bits */
@@ -88,12 +101,17 @@ public class Elevator extends ISubsystem {
      * Once the limit switch is pressed, it will set the encoders of the elevator to zero.
      */
     public void zeroEncoder() {
-        innerStage.set(ControlMode.PercentOutput, -0.15);
-        while(!elevatorZero.get()) ; // Wait until the elevator's sensor is pressed
+        //innerStage.set(ControlMode.PercentOutput, 0.15);
+        //while(!elevatorZero.get()) ; // Wait until the elevator's sensor is pressed
         
         // Set the encoders to zero.
-        innerStage.setSelectedSensorPosition(0);
-        outerStage.setSelectedSensorPosition(0);
+        if(elevatorZero.get() == true) {
+            innerStage.setSelectedSensorPosition(0);
+            outerStage.setSelectedSensorPosition(0);
+            RobotMap.elevator.innerStage.setNeutralMode(NeutralMode.Brake);
+        }
+
+        //innerStage.set(ControlMode.PercentOutput, 0);
     }
 
     /**
@@ -119,32 +137,38 @@ public class Elevator extends ISubsystem {
         innerStage.set(ControlMode.Position, pos.getInner());
         outerStage.set(ControlMode.Position, pos.getOuter());
         
-        while(!onTarget());
+        // while(!onTarget());
 
-        switch(pos) {
-            case CARGO_LOW:
-            case CARGO_MEDIUM:
-            case CARGO_HIGH:
-                // Spit out the ball.
-                setRollers(-1);
-                super.sleep(1000);
-                break;
-            case HATCH_LOW:
-            case HATCH_MEDIUM:
-            case HATCH_HIGH:
-                // Disable the vacuum.
-                releaseVacuum(true);
-                super.sleep(100);
-                releaseVacuum(false);
-            case NEUTRAL:
-                // Do nothing. We are already in neutral.
-                break;
-        }
+        // switch(pos) {
+        //     case CARGO_LOW:
+        //     case CARGO_MEDIUM:
+        //     case CARGO_HIGH:
+        //         // Spit out the ball.
+        //         setRollers(-1);
+        //         super.sleep(1000);
+        //         break;
+        //     case HATCH_LOW:
+        //     case HATCH_MEDIUM:
+        //     case HATCH_HIGH:
+        //         // Disable the vacuum.
+        //         releaseVacuum(true);
+        //         super.sleep(100);
+        //         releaseVacuum(false);
+        //     case NEUTRAL:
+        //         // Do nothing. We are already in neutral.
+        //         break;
+        // }
 
-        innerStage.set(ControlMode.Position, ElevatorPositions.NEUTRAL.getInner());
-        outerStage.set(ControlMode.Position, ElevatorPositions.NEUTRAL.getOuter());
+        // innerStage.set(ControlMode.Position, ElevatorPositions.NEUTRAL.getInner());
+        // outerStage.set(ControlMode.Position, ElevatorPositions.NEUTRAL.getOuter());
+        // while(!onTarget());
+        // innerStage.set(ControlMode.PercentOutput, 0);
+        // outerStage.set(ControlMode.PercentOutput, 0);
+    }
 
-        while(!onTarget());
+    public void disablePower() {
+        innerStage.set(ControlMode.PercentOutput, 0);
+        outerStage.set(ControlMode.PercentOutput, 0);
     }
 
     /**
@@ -177,16 +201,6 @@ public class Elevator extends ISubsystem {
         boolean innerElevatorTarget = Math.abs(innerStage.getClosedLoopError()) < tolerance;
         boolean outerElevatorTarget = Math.abs(outerStage.getClosedLoopError()) < tolerance;
         return (innerElevatorTarget && outerElevatorTarget);
-    }
-
-    /**
-     * Get the raw value from the ultrasonic sensor.
-     * Will be used to determine whether a cargo ball or hatch panel is in place.
-     * If the sensor returns zero, then there is no cargo ball.
-     * @return A raw, unscaled output from the ultrasonic sensor.
-     */
-    public double getRawUltrasonic() {
-        return ultrasonic.getVoltage();
     }
 
     /**
@@ -260,6 +274,11 @@ public class Elevator extends ISubsystem {
      */
     public void releaseVacuum(boolean value) {
         vacuumRelease.set(value);
+    }
+
+    public boolean getIRBeam()
+    {
+        return IRBeam.get();
     }
 
 }

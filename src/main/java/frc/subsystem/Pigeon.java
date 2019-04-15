@@ -2,6 +2,7 @@ package frc.subsystem;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import frc.enums.IDs;
 import frc.robot.RobotMap;
 
 /**
@@ -11,8 +12,10 @@ public class Pigeon {
     private static Pigeon instance = null;
     PigeonIMU pigeonIMU = null;
 
+    double[] ypr;
+
     private Pigeon() {
-        pigeonIMU = new PigeonIMU(RobotMap.driveTrain.leftFollower);
+        pigeonIMU = new PigeonIMU(IDs.PIGEON.getValue());
         pigeonIMU.setYaw(0);
     }
 
@@ -25,8 +28,18 @@ public class Pigeon {
     }
 
     public double getHeading() {
-        double[] ypr = new double[3];
+        ypr = new double[3];
         pigeonIMU.getYawPitchRoll(ypr);
         return ypr[0];
+    }
+
+    public double getPitch() {
+        pigeonIMU.getYawPitchRoll(ypr);
+        return ypr[1];
+    }
+
+    public double getRoll() {
+        pigeonIMU.getYawPitchRoll(ypr);
+        return ypr[2];
     }
 }

@@ -17,7 +17,7 @@ public class CameraSystem {
     
     private CameraSystem() {
         frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
-        rearCamera  = CameraServer.getInstance().startAutomaticCapture(1);
+        //rearCamera  = CameraServer.getInstance().startAutomaticCapture(1);
         server = CameraServer.getInstance().getServer();
 
         server.setSource(frontCamera);

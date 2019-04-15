@@ -2,7 +2,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.auto.missions.AutoMission;
-import frc.opmode.Autonomous;
 import frc.opmode.Disabled;
 import frc.opmode.OpMode;
 import frc.opmode.TeleOp;
@@ -37,7 +36,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    _opMode = new Autonomous();
+    _opMode = new TeleOp();
     logger.printStatus("Initializing autonomous.");
     _opMode.init();
     logger.printStatus("Looping autonomous.");
@@ -50,7 +49,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    _opMode = new TeleOp();
+    if(!(_opMode instanceof TeleOp))
+      _opMode = new TeleOp();
     logger.printStatus("Initializing teleop.");
     _opMode.init();
     logger.printStatus("Looping teleop.");

@@ -41,8 +41,8 @@ public class Limelight {
         limelightConfig.getEntry(sPeriod).setDouble(0.013);
 
         // x: stopping point, y: output speed
-        double[] point1 = new double[] { 1.4, 0 };
-        double[] point2 = new double[] { 0.3, 1 };
+        double[] point1 = new double[] { 14, 0 };
+        double[] point2 = new double[] { 1.2, 1 };
 
         // Calculate slope.
         m = (point2[1] - point1[1])/(point2[0] - point1[0]);
@@ -54,7 +54,6 @@ public class Limelight {
     public static Limelight getInstance() {
         if(instance == null)
             instance = new Limelight();
-
         return instance;
     }
     
@@ -80,8 +79,8 @@ public class Limelight {
         double leftOutput  = result * aLeft;
         double rightOutput = result * aRight;
 
-        RobotMap.logger.printStatus(String.format("Limelight was calculated. Left: %s; Right: %s", 
-            new DecimalFormat("#.####").format(leftOutput), new DecimalFormat("#.####").format(rightOutput)));
+        // RobotMap.logger.printStatus(String.format("Limelight was calculated. Left: %s; Right: %s", 
+        //     new DecimalFormat("#.####").format(leftOutput), new DecimalFormat("#.####").format(rightOutput)));
 
         return new double[] { leftOutput, rightOutput };
     }
@@ -108,7 +107,7 @@ public class Limelight {
     public void setLights(boolean state) {
         double value;
         value = state ? 0.0 : 1.0;
-        limelightConfig.getEntry("ledMode").setDouble(value);
+        limelight.getEntry("ledMode").setDouble(value); // Do nothing now. It doesn't work.
     }
 
     /**
@@ -117,7 +116,21 @@ public class Limelight {
      */
     public boolean getLight() {
         boolean value;
-        value = limelightConfig.getEntry("ledMode").getDouble(0) == 0 ? true : false;
+        value = limelight.getEntry("ledMode").getDouble(0) == 0 ? true : false;
         return value;
+    }
+
+    /**
+     * Sets whether the robot should be in drive mode or targetting mode.
+     */
+    public void setMode(boolean isDrive) {
+        if(isDrive)
+            limelight.getEntry("pipeline").setDouble(1);
+        else
+            limelight.getEntry("pipeline").setDouble(0);
+    }
+
+    public void setPipeline(int pipeline) {
+        limelight.getEntry("pipeline").setNumber(pipeline);
     }
 }
