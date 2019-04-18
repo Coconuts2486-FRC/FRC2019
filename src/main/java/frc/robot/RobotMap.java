@@ -42,7 +42,7 @@ public class RobotMap
         notifier.startPeriodic(0.1);
 
         CameraServer.getInstance().startAutomaticCapture(0);
-        CameraServer.getInstance().startAutomaticCapture(1);
+        //CameraServer.getInstance().startAutomaticCapture(1); // Enable for a second USB camera.
 
         DriverStation ds = DriverStation.getInstance();
 

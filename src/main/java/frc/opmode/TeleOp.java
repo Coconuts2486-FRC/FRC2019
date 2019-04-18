@@ -131,7 +131,7 @@ public class TeleOp extends OpMode {
         } else {
             elevator.outerStage.set(ControlMode.Position, 0);
 
-            if (false/** driveTrain.secondaryOperator.getRawButton(3) */) {
+            if (false /** driveTrain.secondaryOperator.getRawButton(3) */) {
                 climbCommand.run();
             } else {
                 if (driveTrain.secondaryOperator.getRawButton(4))

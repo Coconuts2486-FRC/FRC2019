@@ -36,9 +36,9 @@ public class Limelight {
         limelight = tableInstance.getTable("limelight");
         limelightConfig = tableInstance.getTable("limelightConfig");
 
-        limelightConfig.getEntry(sVelocity).setDouble(0.3);
-        limelightConfig.getEntry(sAmplitude).setDouble(5);
-        limelightConfig.getEntry(sPeriod).setDouble(0.013);
+        limelightConfig.getEntry(sVelocity).setDouble(0.35);
+        limelightConfig.getEntry(sAmplitude).setDouble(1.75);
+        limelightConfig.getEntry(sPeriod).setDouble(0.2);
 
         // x: stopping point, y: output speed
         double[] point1 = new double[] { 14, 0 };

@@ -5,8 +5,10 @@ import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
 
 /**
+ * DEPRECATED: Ommitted due to encoders on the drive
  * Provides a system for managing which camera is currently active.
  */
+@Deprecated
 public class CameraSystem {
     private static CameraSystem instance = null;
     UsbCamera frontCamera;

@@ -4,7 +4,7 @@ package frc.enums;
  * Provides PIDF values for different subsystems.
  */
 public enum PIDFeedback {
-    INNER_ELEVATOR(0.1, 0, 0, 0), OUTER_ELEVATOR(0.35, 0, 0, 0);
+    INNER_ELEVATOR(0.2, 0, 0, 0), OUTER_ELEVATOR(0.5, 0, 0, 0);
 
     private final double kP;
     private final double kI;
