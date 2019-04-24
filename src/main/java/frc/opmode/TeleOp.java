@@ -48,8 +48,9 @@ public class TeleOp extends OpMode {
             limelight.setLights(true);
             limelightControl();
         } else {
-            limelight.setMode(true);
-            limelight.setLights(true);
+            // limelight.setMode(true);
+            limelight.setLights(false);
+            limelight.setPipeline(1);
             operatorControl();
         }
     }
@@ -130,45 +131,40 @@ public class TeleOp extends OpMode {
             }
         } else {
             elevator.outerStage.set(ControlMode.Position, 0);
+            if (driveTrain.secondaryOperator.getRawButton(4))
+                elevator.setInnerSpeed(-1);
+            else if (driveTrain.secondaryOperator.getRawButton(5))
+                elevator.setInnerSpeed(0.85);
+            else
+                elevator.setInnerSpeed(0);
 
-            if (false /** driveTrain.secondaryOperator.getRawButton(3) */) {
-                climbCommand.run();
-            } else {
-                if (driveTrain.secondaryOperator.getRawButton(4))
-                    elevator.setInnerSpeed(-0.85);
-                else if (driveTrain.secondaryOperator.getRawButton(5))
-                    elevator.setInnerSpeed(0.55);
-                else
-                    elevator.setInnerSpeed(0);
+            // boolean climbPressed = driveTrain.secondaryOperator.getRawButton(7);
+            // if(climbHeld == false)
+            // if(climbPressed)
+            // climber.climbPistons.set(!climber.climbPistons.get());
+            // climbHeld = climbPressed ? true : false;
 
-                // boolean climbPressed = driveTrain.secondaryOperator.getRawButton(7);
-                // if(climbHeld == false)
-                // if(climbPressed)
-                // climber.climbPistons.set(!climber.climbPistons.get());
-                // climbHeld = climbPressed ? true : false;
+            // boolean climbPressed = driveTrain.secondaryOperator.getRawButton(7);
+            // if(climbHeld == false)
+            // if(climbPressed)
+            // if(climber.isNeutral == true) {
+            // climber.enableArm();
+            // //elevator.set(ElevatorPositions.CLIMB_MAIN);
+            // }
+            // else {
+            // climber.disableArm();
+            // elevator.disablePower();
+            // }
+            // climbHeld = climbPressed ? true : false;
 
-                // boolean climbPressed = driveTrain.secondaryOperator.getRawButton(7);
-                // if(climbHeld == false)
-                // if(climbPressed)
-                // if(climber.isNeutral == true) {
-                // climber.enableArm();
-                // //elevator.set(ElevatorPositions.CLIMB_MAIN);
-                // }
-                // else {
-                // climber.disableArm();
-                // elevator.disablePower();
-                // }
-                // climbHeld = climbPressed ? true : false;
+            if (driveTrain.secondaryOperator.getRawButton(6))
+                climber.enableArm();
+            else if (driveTrain.secondaryOperator.getRawButton(7))
+                climber.disableArm();
+            else
+                climber.zeroPower();
 
-                if (driveTrain.secondaryOperator.getRawButton(6))
-                    climber.enableArm();
-                else if (driveTrain.secondaryOperator.getRawButton(7))
-                    climber.disableArm();
-                else
-                    climber.zeroPower();
-
-                climber.climbRollers.set(ControlMode.PercentOutput, -driveTrain.getJoystickY());
-            }
+            climber.climbRollers.set(ControlMode.PercentOutput, -driveTrain.getJoystickY());
         }
 
         // Elevator manual override. Positive is up.

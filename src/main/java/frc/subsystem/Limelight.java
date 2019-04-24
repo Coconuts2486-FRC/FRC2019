@@ -41,7 +41,7 @@ public class Limelight {
         limelightConfig.getEntry(sPeriod).setDouble(0.2);
 
         // x: stopping point, y: output speed
-        double[] point1 = new double[] { 14, 0 };
+        double[] point1 = new double[] { 14, 0.2 };
         double[] point2 = new double[] { 1.2, 1 };
 
         // Calculate slope.
